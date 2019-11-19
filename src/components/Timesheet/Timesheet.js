@@ -16,35 +16,35 @@ import { inflect } from "inflection";
 import Summary from "./Summary";
 import DetailedSummary from "./DetailedSummary";
 import DateSummary from "./DateSummary";
-import addWeeks from "date-fns/add_weeks";
-import addMonths from "date-fns/add_months";
-import startOfWeek from "date-fns/start_of_week";
-import endOfWeek from "date-fns/end_of_week";
-import startOfMonth from "date-fns/start_of_month";
+import addWeeks from "date-fns/addWeeks";
+import addMonths from "date-fns/addMonths";
+import startOfWeek from "date-fns/startOfWeek";
+import endOfWeek from "date-fns/endOfWeek";
+import startOfMonth from "date-fns/startOfMonth";
 import format from "date-fns/format";
-import endOfMonth from "date-fns/end_of_month";
+import endOfMonth from "date-fns/endOfMonth";
 import useTimesheet from "../../hooks/useTimesheet";
 
 // TODO: clean up
-const _startOfMonth = format(startOfMonth(new Date()), "YYYY-MM-DDTHH:mm:ss");
-const _endOfMonth = format(endOfMonth(new Date()), "YYYY-MM-DDTHH:mm:ss");
+const _startOfMonth = format(startOfMonth(new Date()), "yyyy-MM-ddTHH:mm:ss");
+const _endOfMonth = format(endOfMonth(new Date()), "yyyy-MM-ddTHH:mm:ss");
 const _startOfLastMonth = format(
   startOfMonth(addMonths(new Date(), -1)),
-  "YYYY-MM-DDTHH:mm:ss"
+  "yyyy-MM-ddTHH:mm:ss"
 );
 const _endOfLastMonth = format(
   endOfMonth(addMonths(new Date(), -1)),
-  "YYYY-MM-DDTHH:mm:ss"
+  "yyyy-MM-ddTHH:mm:ss"
 );
-const _startOfThisWeek = format(startOfWeek(new Date()), "YYYY-MM-DDTHH:mm:ss");
-const _endOfThisWeek = format(endOfWeek(new Date()), "YYYY-MM-DDTHH:mm:ss");
+const _startOfThisWeek = format(startOfWeek(new Date()), "yyyy-MM-ddTHH:mm:ss");
+const _endOfThisWeek = format(endOfWeek(new Date()), "yyyy-MM-ddTHH:mm:ss");
 const _startOfLastWeek = format(
   startOfWeek(addWeeks(new Date(), -1)),
-  "YYYY-MM-DDTHH:mm:ss"
+  "yyyy-MM-ddTHH:mm:ss"
 );
 const _endOfLastWeek = format(
   endOfWeek(addWeeks(new Date(), -1)),
-  "YYYY-MM-DDTHH:mm:ss"
+  "yyyy-MM-ddTHH:mm:ss"
 );
 
 const Timesheet = styled.div`
@@ -125,7 +125,7 @@ export default () => {
 
       <DateSummary
         label="Summary for today"
-        forDate={format(new Date(), "YYYY-MM-DD")}
+        forDate={format(new Date(), "yyyy-MM-dd")}
       />
       <DetailedSummary
         label="Summary for this week"

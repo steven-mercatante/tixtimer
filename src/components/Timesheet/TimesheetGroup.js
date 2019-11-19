@@ -24,7 +24,7 @@ export default ({
   entriesAreSelected
 }) => {
   // console.log("--- TimesheetGroup render()");
-  const prettyDate = format(label, "dddd, MMM Do YYYY");
+  const prettyDate = format(label, "dddd, MMM Do yyyy");
   const prettyTime = prettyPrintTime(totalTime);
   const timeFraction = (totalTime / 3600).toFixed(2);
 

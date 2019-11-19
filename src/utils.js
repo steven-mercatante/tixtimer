@@ -111,7 +111,7 @@ export const convertTime = time => {
 
 export const groupTimesheetEntries = entries => {
   // Create an object keyed by date
-  const groupsDict = groupBy(entries, e => format(e.loggedFor, "YYYY-MM-DD"));
+  const groupsDict = groupBy(entries, e => format(e.loggedFor, "yyyy-MM-DD"));
 
   // Convert object to array, and sort outer groups by date reverse chronologically
   const groupsArray = Object.entries(groupsDict).sort((a, b) =>

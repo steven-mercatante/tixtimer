@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDetailedSummary } from "../../api";
-import eachDay from "date-fns/each_day";
+import eachDay from "date-fns/eachDayOfInterval";
 import format from "date-fns/format";
 import Time from "./Time";
 
@@ -33,7 +33,7 @@ export default function DetailedSummary({ label, startDate, endDate }) {
     getDetailedSummary(startDate, endDate).then(data => {
       setData(data);
     });
-  }, []);
+  }, [endDate, startDate]);
 
   const dates = eachDay(startDate, endDate).map(date =>
     format(date, "YYYY-MM-DD")
