@@ -144,9 +144,9 @@ export const prettyPrintTime = seconds => {
  *
  * @param {Array} arr
  */
-export const sqlArrToObj = arr =>
+export const arrToObj = arr =>
   arr.reduce((acc, item) => {
-    acc[item.id] = item.dataValues;
+    acc[item.id] = item;
     return acc;
   }, {});
 

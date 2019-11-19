@@ -34,19 +34,19 @@ const Content = styled.div`
 export default () => (
   <ModalProvider>
     <ModalRoot />
-    {/* <ToastContainer hideProgressBar={true} /> */}
+    <ToastContainer hideProgressBar={true} />
     <Sidebar />
     <ContentContainer>
       <Content>
         <ClientProvider>
           <TimerProvider>
             <Header />
-            {/* <Router>
+            <Router>
               <ClientList path="/clients" />
               <ProjectList path="/projects" />
               <Timers path="/timers" />
               <Timesheet path="/timesheets" />
-            </Router> */}
+            </Router>
           </TimerProvider>
         </ClientProvider>
       </Content>

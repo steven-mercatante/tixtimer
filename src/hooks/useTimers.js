@@ -48,10 +48,9 @@ export default function useTimers() {
   useEffect(() => {
     getTimers().then(resp => {
       const timers = resp.reduce((acc, timer) => {
-        const dataValues = timer.dataValues;
-        dataValues.starts = JSON.parse(dataValues.starts);
-        dataValues.stops = JSON.parse(dataValues.stops);
-        acc[timer.id] = dataValues;
+        timer.starts = JSON.parse(timer.starts);
+        timer.stops = JSON.parse(timer.stops);
+        acc[timer.id] = timer;
         return acc;
       }, {});
 
