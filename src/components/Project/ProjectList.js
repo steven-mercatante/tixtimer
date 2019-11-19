@@ -25,10 +25,10 @@ export default () => {
     return <div>Loading...</div>;
   }
 
+  // TODO: inflect the deleteMsg below
   return (
     <div>
       <ProjectForm callback={loadProjects} />
-
       {selectedItems.length > 0 && (
         <BulkActions
           deleteMsgFunc={() =>
@@ -40,7 +40,6 @@ export default () => {
           }}
         />
       )}
-
       <table>
         <thead>
           <tr>
@@ -65,7 +64,7 @@ export default () => {
                   checked={selectedItems.includes(project.id)}
                 />
               </td>
-              <td>{clients[project.clientId].name}</td>
+              <td>{clients[project.client].name}</td>
               <td>{project.name}</td>
             </tr>
           ))}

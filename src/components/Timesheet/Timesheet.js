@@ -23,28 +23,33 @@ import endOfWeek from "date-fns/endOfWeek";
 import startOfMonth from "date-fns/startOfMonth";
 import format from "date-fns/format";
 import endOfMonth from "date-fns/endOfMonth";
+import parseISO from "date-fns/parseISO";
 import useTimesheet from "../../hooks/useTimesheet";
 
 // TODO: clean up
-const _startOfMonth = format(startOfMonth(new Date()), "yyyy-MM-ddTHH:mm:ss");
-const _endOfMonth = format(endOfMonth(new Date()), "yyyy-MM-ddTHH:mm:ss");
-const _startOfLastMonth = format(
-  startOfMonth(addMonths(new Date(), -1)),
-  "yyyy-MM-ddTHH:mm:ss"
+const _startOfMonth = parseISO(
+  format(startOfMonth(new Date()), "yyyy-MM-dd HH:mm:ss")
 );
-const _endOfLastMonth = format(
-  endOfMonth(addMonths(new Date(), -1)),
-  "yyyy-MM-ddTHH:mm:ss"
+const _endOfMonth = parseISO(
+  format(endOfMonth(new Date()), "yyyy-MM-dd HH:mm:ss")
 );
-const _startOfThisWeek = format(startOfWeek(new Date()), "yyyy-MM-ddTHH:mm:ss");
-const _endOfThisWeek = format(endOfWeek(new Date()), "yyyy-MM-ddTHH:mm:ss");
-const _startOfLastWeek = format(
-  startOfWeek(addWeeks(new Date(), -1)),
-  "yyyy-MM-ddTHH:mm:ss"
+const _startOfLastMonth = parseISO(
+  format(startOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
 );
-const _endOfLastWeek = format(
-  endOfWeek(addWeeks(new Date(), -1)),
-  "yyyy-MM-ddTHH:mm:ss"
+const _endOfLastMonth = parseISO(
+  format(endOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+);
+const _startOfThisWeek = parseISO(
+  format(startOfWeek(new Date()), "yyyy-MM-dd HH:mm:ss")
+);
+const _endOfThisWeek = parseISO(
+  format(endOfWeek(new Date()), "yyyy-MM-dd HH:mm:ss")
+);
+const _startOfLastWeek = parseISO(
+  format(startOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+);
+const _endOfLastWeek = parseISO(
+  format(endOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
 );
 
 const Timesheet = styled.div`
