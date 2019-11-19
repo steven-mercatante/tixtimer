@@ -1,0 +1,22 @@
+html {
+  background-color: #f0f3f7;
+}
+
+body {
+  color: #000;
+}
+
+input {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+}
+ul li {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
