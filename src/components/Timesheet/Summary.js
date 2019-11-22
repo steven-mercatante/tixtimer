@@ -10,12 +10,13 @@ function sumRows(rows) {
 }
 
 export default function Summary({ label, startDate, endDate }) {
+  // console.log("Summary dates:", startDate, endDate);
   const [rows, setRows] = useState();
   useEffect(() => {
     getSummary(startDate, endDate).then(rows => {
       setRows(rows);
     });
-  }, []);
+  }, [startDate, endDate]);
 
   return (
     <div>

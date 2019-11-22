@@ -27,29 +27,23 @@ import parseISO from "date-fns/parseISO";
 import useTimesheet from "../../hooks/useTimesheet";
 
 // TODO: clean up
-const _startOfMonth = parseISO(
-  format(startOfMonth(new Date()), "yyyy-MM-dd HH:mm:ss")
-);
-const _endOfMonth = parseISO(
-  format(endOfMonth(new Date()), "yyyy-MM-dd HH:mm:ss")
-);
+const _startOfMonth = parseISO(format(startOfMonth(new Date()), "yyyy-MM-dd"));
+const _endOfMonth = parseISO(format(endOfMonth(new Date()), "yyyy-MM-dd"));
 const _startOfLastMonth = parseISO(
-  format(startOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+  format(startOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd")
 );
 const _endOfLastMonth = parseISO(
-  format(endOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+  format(endOfMonth(addMonths(new Date(), -1)), "yyyy-MM-dd")
 );
 const _startOfThisWeek = parseISO(
-  format(startOfWeek(new Date()), "yyyy-MM-dd HH:mm:ss")
+  format(startOfWeek(new Date()), "yyyy-MM-dd")
 );
-const _endOfThisWeek = parseISO(
-  format(endOfWeek(new Date()), "yyyy-MM-dd HH:mm:ss")
-);
+const _endOfThisWeek = parseISO(format(endOfWeek(new Date()), "yyyy-MM-dd"));
 const _startOfLastWeek = parseISO(
-  format(startOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+  format(startOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd")
 );
 const _endOfLastWeek = parseISO(
-  format(endOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd HH:mm:ss")
+  format(endOfWeek(addWeeks(new Date(), -1)), "yyyy-MM-dd")
 );
 
 const Timesheet = styled.div`
@@ -88,7 +82,6 @@ const Search = ({ setSearchTerm, setSearchTermTotalTime }) => {
 };
 
 export default () => {
-  console.log("--- Timesheet render()");
   const {
     entries,
     createEntry,
@@ -142,16 +135,16 @@ export default () => {
         startDate={_startOfLastWeek}
         endDate={_endOfLastWeek}
       />
-      <Summary
+      {/* <Summary
         label="Summary for this month"
         startDate={_startOfMonth}
         endDate={_endOfMonth}
-      />
-      <Summary
+      /> */}
+      {/* <Summary
         label="Summary for last month"
         startDate={_startOfLastMonth}
         endDate={_endOfLastMonth}
-      />
+      /> */}
 
       <Search
         setSearchTerm={setSearchTerm}

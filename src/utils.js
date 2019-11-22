@@ -1,6 +1,6 @@
 // TODO: break things out into modules within a utils package
 import groupBy from "lodash/groupBy";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import parse from "parse-duration";
 
 // TODO: test & docstring
@@ -111,7 +111,9 @@ export const convertTime = time => {
 
 export const groupTimesheetEntries = entries => {
   // Create an object keyed by date
-  const groupsDict = groupBy(entries, e => format(e.loggedFor, "yyyy-MM-DD"));
+  const groupsDict = groupBy(entries, e =>
+    format(parseISO(e.logged_for), "yyyy-MM-dd")
+  );
 
   // Convert object to array, and sort outer groups by date reverse chronologically
   const groupsArray = Object.entries(groupsDict).sort((a, b) =>
@@ -120,7 +122,7 @@ export const groupTimesheetEntries = entries => {
 
   // Sort the inner entries array chronologically
   groupsArray.forEach(([_, entries]) => {
-    entries.sort((a, b) => (a.loggedFor > b.loggedFor ? 1 : -1));
+    entries.sort((a, b) => (a.logged_for > b.logged_for ? 1 : -1));
   });
 
   return groupsArray;

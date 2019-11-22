@@ -1,5 +1,6 @@
 // TODO: separate things into their own modules
 import axios from "axios";
+import format from "date-fns/format";
 
 const ITEMS_PER_PAGE = 50;
 
@@ -30,13 +31,14 @@ const _delete = url => {
     .catch(err => console.log(`Error GET ${url}:`, err));
 };
 
-export const getClients = () => _get("clients");
+export const getClients = () => _get("clients/");
 
 export const createClient = name => _post("clients/", { name });
 
-export const getProjects = () => _get("projects");
+export const getProjects = () => _get("projects/");
 
-export const createProject = (clientId, name) => {};
+export const createProject = (clientId, name) =>
+  _post("projects/", { client: clientId, name });
 
 export const deleteProject = id => _delete(`projects/${id}/`);
 
@@ -46,9 +48,9 @@ export const deleteProjects = ids => {
   });
 };
 
-export const getTimers = () => _get("timers");
+export const getTimers = () => _get("timers/");
 
-export const createTimer = (id, now) => {};
+export const createTimer = (id, now) => _post("timers/", { id, now });
 
 export const deleteClient = id => _delete(`clients/${id}/`);
 
@@ -62,7 +64,8 @@ export const deleteTimer = id => _delete(`timers/${id}/`);
 
 export const updateTimer = (id, data) => {};
 
-export const getTimesheetEntries = async (page = 1, searchTerm = "") => {};
+export const getTimesheetEntries = async (page = 1, searchTerm = "") =>
+  _get("entries/");
 
 export const createTimesheetEntry = (
   id,
@@ -76,14 +79,14 @@ export const updateTimesheetEntry = (id, data) => {};
 
 export const deleteTimesheetEntry = id => {};
 
-// TODO: use parameterized query
-export const getSummary = (start, end) => {};
+export const getSummary = (startDate, endDate) => {
+  startDate = format(startDate, "yyyy-MM-dd");
+  endDate = format(endDate, "yyyy-MM-dd");
+  _get(`summaries?start_date=${startDate}&end_date=${endDate}`);
+};
 
-// TODO: use parameterized query
 export const getDetailedSummary = async (start, end) => {};
 
-// TODO: use parameterized query
 export const getSummaryForDate = async date => {};
 
-// TODO: use parameterized query
 export const getTotalTimeForSearchTerm = async searchTerm => {};

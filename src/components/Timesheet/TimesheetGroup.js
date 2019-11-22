@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { prettyPrintTime } from "../../utils";
 import format from "date-fns/format";
+import parseISO from "date-fns/parseISO";
 
 const Table = styled.table`
   table-layout: fixed;
@@ -23,8 +24,7 @@ export default ({
   selectChildren,
   entriesAreSelected
 }) => {
-  // console.log("--- TimesheetGroup render()");
-  const prettyDate = format(label, "dddd, MMM Do yyyy");
+  const prettyDate = format(parseISO(label), "EEEE, LLLL do yyyy");
   const prettyTime = prettyPrintTime(totalTime);
   const timeFraction = (totalTime / 3600).toFixed(2);
 

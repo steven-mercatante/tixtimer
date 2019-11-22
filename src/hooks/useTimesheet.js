@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import { inflect } from "inflection";
 
 function reducer(state, action) {
-  console.log("--- useTimesheet action:", action);
   switch (action.type) {
     case "load_entries": {
       return action.entries;

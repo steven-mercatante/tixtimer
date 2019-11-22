@@ -53,11 +53,11 @@ export default ({
         />
       </Td>
       <Td>
-        <StyledDatePicker
+        {/* <StyledDatePicker
           selected={moment(loggedFor)}
           onChange={handleDatePickerChange}
           dateFormat="MM/DD/YY"
-        />
+        /> */}
       </Td>
       <Td>
         <ProjectDropdown
