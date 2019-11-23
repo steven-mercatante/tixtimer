@@ -1,10 +1,7 @@
-import React, { useContext } from "react";
-import ClientContext from "../../context/ClientContext";
+import React from "react";
 import Dropdown from "../Dropdown";
 
-export default ({ callback, selected }) => {
-  const { projects } = useContext(ClientContext);
-
+export default function ProjectDropdown({ projects, callback, selected }) {
   const convertForDropdown = projects =>
     Object.values(projects).reduce(
       (acc, item) => {
@@ -21,4 +18,4 @@ export default ({ callback, selected }) => {
       selected={selected}
     />
   );
-};
+}

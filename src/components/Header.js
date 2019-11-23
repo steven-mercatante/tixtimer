@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { prettyPrintTime, getTotalUnloggedTime } from "../utils";
 import { Link, navigate } from "@reach/router";
-import TimerContext from "../context/TimerContext";
 import styled from "styled-components";
 
 const Header = styled.header`
@@ -19,9 +18,7 @@ const Button = styled.button`
   background-color: #1de38b;
 `;
 
-export default () => {
-  const { timers, addTimer } = useContext(TimerContext);
-
+export default ({ timers, addTimer }) => {
   const handleAddTimer = () => {
     navigate("/timers");
     addTimer();

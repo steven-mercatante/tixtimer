@@ -1,16 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import ClientForm from "./ClientForm";
-import ClientContext from "../../context/ClientContext";
 import useSelectItems from "../../hooks/useSelectItems";
 import BulkActions from "../BulkActions";
 import { observer } from "mobx-react";
 
-function ClientList({ clients, addClient }) {
-  console.log("ClientList clients:", clients);
-  // clients.forEach(client => {
-  //   console.log("YOOOO", client);
-  // });
-  const { _, loadClients, deleteClients } = useContext(ClientContext);
+function ClientList({ clientStore }) {
+  console.log("ClientList clients:", clientStore.clients.toJSON());
 
   const itemIdExtractor = item => item.id;
 
@@ -20,11 +15,11 @@ function ClientList({ clients, addClient }) {
     toggleSelectItem,
     allItemsSelected,
     toggleSelectAll
-  } = useSelectItems(Object.values(clients), itemIdExtractor);
+  } = useSelectItems(Object.values(clientStore.clients), itemIdExtractor);
 
   return (
     <React.Fragment>
-      <ClientForm addClient={addClient} />
+      <ClientForm addClient={clientStore.addClient} />
 
       {selectedItems.length > 0 && (
         <BulkActions
@@ -32,7 +27,7 @@ function ClientList({ clients, addClient }) {
             `Are you sure you want to delete ${selectedItems.length} clients?`
           }
           onConfirmCallback={() => {
-            deleteClients(selectedItems);
+            clientStore.deleteClients(selectedItems);
             unselectAllItems();
           }}
         />
@@ -52,7 +47,7 @@ function ClientList({ clients, addClient }) {
           </tr>
         </thead>
         <tbody>
-          {clients.map(client => (
+          {clientStore.clients.map(client => (
             <tr key={client.id}>
               <td>
                 <input

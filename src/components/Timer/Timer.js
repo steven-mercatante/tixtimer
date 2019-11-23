@@ -57,7 +57,8 @@ export default function({
   removeTimer,
   logTime,
   setTimerTask,
-  assignToProject
+  assignToProject,
+  projects
 }) {
   const { showModal } = useContext(ModalContext);
 
@@ -127,6 +128,7 @@ export default function({
       <ProjectDropdown
         callback={projectId => assignToProject(id, projectId)}
         selected={projectId}
+        projects={projects}
       />
     </TimerCard>
   );
