@@ -15,10 +15,6 @@ export const ProjectStore = types
     isLoading: true // TODO: toggle this
   })
   .actions(self => {
-    function setLoading(loading) {
-      self.isLoading = loading;
-    }
-
     const addProject = flow(function* addProject(clientId, name) {
       try {
         const result = yield createProject(clientId, name);
@@ -48,7 +44,7 @@ export const ProjectStore = types
       try {
         const projects = yield getProjects();
         updateProjects(projects);
-        setLoading(false);
+        self.isLoading = false;
       } catch (err) {
         console.error("Failed to load projects", err);
       }

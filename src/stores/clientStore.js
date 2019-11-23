@@ -13,10 +13,6 @@ export const ClientStore = types
     isLoading: true // TODO: toggle this
   })
   .actions(self => {
-    function setLoading(loading) {
-      self.isLoading = loading;
-    }
-
     const addClient = flow(function* addClient(name) {
       try {
         const result = yield createClient(name);
@@ -42,7 +38,7 @@ export const ClientStore = types
       try {
         const clients = yield getClients();
         updateClients(clients);
-        setLoading(false);
+        self.isLoading = false;
       } catch (err) {
         console.error("Failed to load clients", err);
       }
