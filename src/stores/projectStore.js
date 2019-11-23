@@ -1,6 +1,7 @@
 import { types, flow } from "mobx-state-tree";
 import { Client } from "./clientStore";
 import { createProject, getProjects } from "../api";
+import { toast } from "react-toastify";
 
 export const Project = types.model("Project", {
   id: types.identifierNumber,
@@ -20,12 +21,14 @@ export const ProjectStore = types
 
     const addProject = flow(function* addProject(clientId, name) {
       try {
-        const project = yield createProject(clientId, name);
-        self.projects.push({
-          id: project.id,
-          name: project.name,
-          client: project.client
+        const result = yield createProject(clientId, name);
+        const project = Project.create({
+          id: result.id,
+          name: result.name,
+          client: result.client
         });
+        self.projects.push(project);
+        toast.success(`Project "${project.name}" created`);
       } catch (err) {
         console.error("Failed to create project", err);
       }
@@ -37,7 +40,7 @@ export const ProjectStore = types
 
     function updateProjects(project) {
       project.forEach(project => {
-        self.projects.push(project);
+        self.projects.push(project); // TODO: make sure you're pushing model instances?
       });
     }
 

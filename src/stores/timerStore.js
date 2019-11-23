@@ -36,7 +36,7 @@ export const TimerStore = types
 
     function updateTimers(timer) {
       timer.forEach(timer => {
-        self.timers.push(timer);
+        self.timers.push(timer); // TODO: make sure you're pushing model instances?
       });
     }
 
