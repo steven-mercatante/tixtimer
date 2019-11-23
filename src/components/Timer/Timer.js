@@ -3,7 +3,6 @@ import { getTotalTime, prettyPrintTime } from "../../utils";
 import play from "../../play.svg";
 import pause from "../../pause.svg";
 import ModalContext from "../../context/ModalContext";
-import TimerContext from "../../context/TimerContext";
 import styled, { css } from "styled-components";
 import Button from "../atoms/Button";
 import Card from "../atoms/Card";
@@ -51,15 +50,15 @@ const ToggleButton = styled.img`
   cursor: pointer;
 `;
 
-export default function({ timer }) {
-  const {
-    startTimer,
-    stopTimer,
-    removeTimer,
-    logTime,
-    setTimerTask,
-    assignToProject
-  } = useContext(TimerContext);
+export default function({
+  timer,
+  startTimer,
+  stopTimer,
+  removeTimer,
+  logTime,
+  setTimerTask,
+  assignToProject
+}) {
   const { showModal } = useContext(ModalContext);
 
   const { id, task, starts, stops, running, projectId } = timer;

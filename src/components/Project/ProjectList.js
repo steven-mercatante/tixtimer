@@ -21,6 +21,7 @@ function ProjectList({ clients, projects, addProject }) {
     return <div>Loading...</div>;
   }
 
+  // TODO: move ProjectForm out of this component
   // TODO: inflect the deleteMsg below
   return (
     <div>

@@ -9,7 +9,7 @@ import Timesheet from "./components/Timesheet/Timesheet";
 import { ClientProvider } from "./context/ClientContext";
 import ClientList from "./components/Client/ClientList";
 import ProjectList from "./components/Project/ProjectList";
-import Timers from "./components/Timer/Timers";
+import TimerList from "./components/Timer/TimerList";
 import { TimerProvider } from "./context/TimerContext";
 import styled from "styled-components";
 import { ToastContainer } from "react-toastify";
@@ -66,7 +66,7 @@ export default () => (
                 projects={appStore.projectStore.projects}
                 addProject={appStore.projectStore.addProject}
               />
-              <Timers path="/timers" />
+              <TimerList path="/timers" timerStore={appStore.timerStore} />
               <Timesheet path="/timesheets" />
             </Router>
           </TimerProvider>

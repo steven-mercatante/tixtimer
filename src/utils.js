@@ -7,6 +7,9 @@ import parse from "parse-duration";
 export const getHistoricTime = (starts, stops) => {
   let historicTime = 0;
 
+  // TODO: remove this hardcoded return once you're done implementing MST
+  return 0;
+
   starts.forEach((start, i) => {
     const stop = stops[i];
     if (stop !== undefined) {

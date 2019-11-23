@@ -1,12 +1,14 @@
 import { types, flow } from "mobx-state-tree";
 import { ClientStore } from "./clientStore";
 import { ProjectStore } from "./projectStore";
+import { TimerStore } from "./timerStore";
 
 const AppStore = types
   .model("AppStore", {
     isLoading: true,
     clientStore: types.optional(ClientStore, { clients: [] }),
-    projectStore: types.optional(ProjectStore, { projects: [] })
+    projectStore: types.optional(ProjectStore, { projects: [] }),
+    timerStore: types.optional(TimerStore, { timers: [] })
   })
   .actions(self => ({
     afterCreate() {
@@ -22,6 +24,7 @@ const AppStore = types
        */
       yield self.clientStore.loadClients();
       yield self.projectStore.loadProjects();
+      yield self.timerStore.loadTimers();
       self.isLoading = false;
     })
   }));
