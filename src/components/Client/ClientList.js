@@ -3,9 +3,11 @@ import ClientForm from "./ClientForm";
 import ClientContext from "../../context/ClientContext";
 import useSelectItems from "../../hooks/useSelectItems";
 import BulkActions from "../BulkActions";
+import { observer } from "mobx-react";
 
-export default () => {
-  const { clients, loadClients, deleteClients } = useContext(ClientContext);
+function ClientList({ clients }) {
+  console.log("ClientList clients:", clients);
+  const { _, loadClients, deleteClients } = useContext(ClientContext);
 
   const itemIdExtractor = item => item.id;
 
@@ -63,4 +65,6 @@ export default () => {
       </table>
     </React.Fragment>
   );
-};
+}
+
+export default observer(ClientList);

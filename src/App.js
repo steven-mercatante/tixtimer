@@ -18,6 +18,19 @@ import "./css/skeleton.css";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import AppStore from "./models/appStore";
+import { ClientStore } from "./models/client";
+
+const appStore = AppStore.create({});
+
+// const store = AppStore.create({
+//   clients: ClientStore.create([
+//     { id: "1", name: "Client 1" },
+//     { id: "2", name: "Client 2" }
+//   ]),
+//   projects: [{ client: 1, name: "Project 1", id: "1" }]
+// });
+
 const ContentContainer = styled.div`
   position: absolute;
   left: 190px;
@@ -42,8 +55,11 @@ export default () => (
           <TimerProvider>
             <Header />
             <Router>
-              <ClientList path="/clients" />
-              <ProjectList path="/projects" />
+              <ClientList
+                path="/clients"
+                clients={appStore.clientStore.clients}
+              />
+              <ProjectList path="/projects" projects={[]} />
               <Timers path="/timers" />
               <Timesheet path="/timesheets" />
             </Router>

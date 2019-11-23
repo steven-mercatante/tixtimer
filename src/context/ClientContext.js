@@ -24,8 +24,8 @@ const ClientProvider = ({ children }) => {
     getProjects().then(projects => setProjects(projects));
   };
 
-  useEffect(loadClients, []);
-  useEffect(loadProjects, []);
+  // useEffect(loadClients, []);
+  // useEffect(loadProjects, []);
 
   const deleteClients = ids => {
     destroyClients(ids);
