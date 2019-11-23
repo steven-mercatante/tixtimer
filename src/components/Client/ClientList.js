@@ -5,8 +5,11 @@ import useSelectItems from "../../hooks/useSelectItems";
 import BulkActions from "../BulkActions";
 import { observer } from "mobx-react";
 
-function ClientList({ clients }) {
+function ClientList({ clients, addClient }) {
   console.log("ClientList clients:", clients);
+  // clients.forEach(client => {
+  //   console.log("YOOOO", client);
+  // });
   const { _, loadClients, deleteClients } = useContext(ClientContext);
 
   const itemIdExtractor = item => item.id;
@@ -21,7 +24,7 @@ function ClientList({ clients }) {
 
   return (
     <React.Fragment>
-      <ClientForm callback={loadClients} />
+      <ClientForm addClient={addClient} />
 
       {selectedItems.length > 0 && (
         <BulkActions
@@ -49,7 +52,7 @@ function ClientList({ clients }) {
           </tr>
         </thead>
         <tbody>
-          {Object.values(clients).map(client => (
+          {clients.map(client => (
             <tr key={client.id}>
               <td>
                 <input

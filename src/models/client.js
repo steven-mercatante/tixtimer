@@ -1,5 +1,5 @@
-import { types, flow } from "mobx-state-tree";
-import { getClients } from "../api";
+import { types, flow, onPatch } from "mobx-state-tree";
+import { createClient, getClients } from "../api";
 
 export const Client = types.model("Client", {
   id: types.identifier,
@@ -12,9 +12,15 @@ export const ClientStore = types
     isLoading: true
   })
   .actions(self => {
-    function addClient(name) {
+    const addClient = flow(function* addClient(name) {
       console.log("ClientStore.add()", name);
-    }
+      try {
+        const client = yield createClient(name);
+        self.clients.push({ id: String(client.id), name: client.name });
+      } catch (err) {
+        console.error("Failed to create client", err);
+      }
+    });
 
     function deleteClient(id) {
       console.log("ClientStore.delete()", id);

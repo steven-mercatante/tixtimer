@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import Button from "../atoms/Button";
-import { createClient } from "../../api";
 
-export default ({ callback }) => {
+export default ({ addClient }) => {
   const [name, setName] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
-    createClient(name).then(_ => {
-      callback();
-      setName("");
-    });
+    addClient(name);
+    setName("");
   };
 
   return (

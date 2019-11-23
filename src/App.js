@@ -22,6 +22,7 @@ import AppStore from "./models/appStore";
 import { ClientStore } from "./models/client";
 
 const appStore = AppStore.create({});
+console.log("addClient:", appStore.clientStore.addClient);
 
 // const store = AppStore.create({
 //   clients: ClientStore.create([
@@ -58,6 +59,7 @@ export default () => (
               <ClientList
                 path="/clients"
                 clients={appStore.clientStore.clients}
+                addClient={appStore.clientStore.addClient}
               />
               <ProjectList path="/projects" projects={[]} />
               <Timers path="/timers" />
