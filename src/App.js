@@ -18,10 +18,9 @@ import "./css/skeleton.css";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
 
-import AppStore from "./models/appStore";
-import { ClientStore } from "./models/client";
+import AppStore from "./stores/appStore";
 
-const appStore = AppStore.create({});
+const appStore = AppStore.create();
 console.log("addClient:", appStore.clientStore.addClient);
 
 // const store = AppStore.create({
@@ -61,7 +60,12 @@ export default () => (
                 clients={appStore.clientStore.clients}
                 addClient={appStore.clientStore.addClient}
               />
-              <ProjectList path="/projects" projects={[]} />
+              <ProjectList
+                path="/projects"
+                clients={appStore.clientStore.clients}
+                projects={appStore.projectStore.projects}
+                addProject={appStore.projectStore.addProject}
+              />
               <Timers path="/timers" />
               <Timesheet path="/timesheets" />
             </Router>

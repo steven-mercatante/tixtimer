@@ -1,15 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import ProjectForm from "./ProjectForm";
-import ClientContext from "../../context/ClientContext";
 import useSelectItems from "../../hooks/useSelectItems";
 import BulkActions from "../BulkActions";
 import isEmpty from "lodash/isEmpty";
+import { observer } from "mobx-react";
 
-export default () => {
-  const { clients, projects, loadProjects, deleteProjects } = useContext(
-    ClientContext
-  );
-
+function ProjectList({ clients, projects, addProject }) {
   const itemIdExtractor = item => item.id;
 
   const {
@@ -28,14 +24,14 @@ export default () => {
   // TODO: inflect the deleteMsg below
   return (
     <div>
-      <ProjectForm callback={loadProjects} />
+      <ProjectForm clients={clients} addProject={addProject} />
       {selectedItems.length > 0 && (
         <BulkActions
           deleteMsgFunc={() =>
             `Are you sure you want to delete ${selectedItems.length} projects?`
           }
           onConfirmCallback={() => {
-            deleteProjects(selectedItems);
+            // deleteProjects(selectedItems);
             unselectAllItems();
           }}
         />
@@ -55,7 +51,7 @@ export default () => {
           </tr>
         </thead>
         <tbody>
-          {Object.values(projects).map(project => (
+          {projects.map(project => (
             <tr key={project.id}>
               <td>
                 <input
@@ -64,7 +60,7 @@ export default () => {
                   checked={selectedItems.includes(project.id)}
                 />
               </td>
-              <td>{clients[project.client].name}</td>
+              <td>{project.client.name}</td>
               <td>{project.name}</td>
             </tr>
           ))}
@@ -72,4 +68,6 @@ export default () => {
       </table>
     </div>
   );
-};
+}
+
+export default observer(ProjectList);

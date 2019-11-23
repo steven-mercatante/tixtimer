@@ -1,11 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "../atoms/Button";
-import { createProject } from "../../api";
-import ClientContext from "../../context/ClientContext";
 import Dropdown from "../Dropdown";
 
 const convertForDropdown = data =>
-  Object.values(data).reduce(
+  data.reduce(
     (acc, item) => {
       acc.push([item.id, item.name]);
       return acc;
@@ -13,19 +11,17 @@ const convertForDropdown = data =>
     [[null, "-- Select Client --"]]
   );
 
-export default ({ callback }) => {
+export default function ProjectForm({ clients, addProject }) {
   const [name, setName] = useState("");
   const [clientId, setClientId] = useState(null);
-  const { clients } = useContext(ClientContext);
 
   const handleSubmit = e => {
     e.preventDefault();
     if (clientId && name) {
-      createProject(clientId, name).then(_ => {
-        setClientId(null);
-        setName("");
-        callback();
-      });
+      addProject(clientId, name);
+      // !BUG: the dropdown isn't being reset even though we're calling setClientId(null)
+      setClientId(null);
+      setName("");
     }
   };
 
@@ -45,4 +41,4 @@ export default ({ callback }) => {
       <Button type="success">SAVE</Button>
     </form>
   );
-};
+}
