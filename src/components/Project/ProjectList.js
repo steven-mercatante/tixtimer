@@ -5,7 +5,8 @@ import BulkActions from "../BulkActions";
 import isEmpty from "lodash/isEmpty";
 import { observer } from "mobx-react";
 
-function ProjectList({ clients, projects, addProject }) {
+function ProjectList({ clients, projectStore, addProject }) {
+  const { projects, deleteProjects } = projectStore;
   const itemIdExtractor = item => item.id;
 
   const {
@@ -32,7 +33,7 @@ function ProjectList({ clients, projects, addProject }) {
             `Are you sure you want to delete ${selectedItems.length} projects?`
           }
           onConfirmCallback={() => {
-            // deleteProjects(selectedItems);
+            deleteProjects(selectedItems);
             unselectAllItems();
           }}
         />

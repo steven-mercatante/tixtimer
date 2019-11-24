@@ -47,8 +47,7 @@ export default () => (
           <ProjectList
             path="/projects"
             clients={clientStore.clients}
-            projects={projectStore.projects}
-            addProject={projectStore.addProject}
+            projectStore={projectStore}
           />
           <TimerList
             path="/timers"
