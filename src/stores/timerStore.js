@@ -1,7 +1,7 @@
 import { types, flow } from "mobx-state-tree";
 import { Project } from "./projectStore";
-import { createTimer, getTimers, updateTimer } from "../api";
-import { getNow } from "../utils";
+import { createTimer, getTimers, updateTimer, _post } from "../api";
+import { getHistoricTime } from "../utils";
 
 export const Timer = types
   .model("Timer", {
@@ -9,42 +9,54 @@ export const Timer = types
     project: types.reference(Project),
     task: types.string,
     running: false,
-    starts: types.array(types.string),
-    stops: types.array(types.string)
+    starts: types.array(types.number),
+    stops: types.array(types.number)
   })
   .views(self => ({
-    get totalTime() {
-      return 42;
+    get historicTime() {
+      return getHistoricTime(self.starts, self.stops);
     }
   }))
-  .actions(self => ({
-    start() {
-      console.log([...self.starts, getNow()]);
-      updateTimer(self.id, { running: true });
+  .actions(self => {
+    const start = flow(function* start() {
+      yield updateTimer(self.id, { running: true });
+      const start = yield _post(`timerstarts`, { timer: self.id });
+      self.starts.push(start.created_at);
       self.running = true;
-    },
+    });
 
-    stop() {
-      console.log([...self.stops, getNow()]);
-      updateTimer(self.id, { running: false });
+    const stop = flow(function* stop() {
+      yield updateTimer(self.id, { running: false });
+      const stop = yield _post(`timerstops`, { timer: self.id });
+      self.stops.push(stop.created_at);
       self.running = false;
-    },
+    });
 
-    log() {},
+    function log() {
+      console.log("log:", self.getTotalTime());
+    }
 
-    setTask(task) {
+    function setTask(task) {
       self.task = task;
-    },
+    }
 
-    setProject(projectId) {
+    function setProject(projectId) {
       self.project = projectId;
     }
-  }));
+
+    return {
+      start,
+      stop,
+      log,
+      setTask,
+      setProject
+    };
+  });
 
 export const TimerStore = types
   .model("TimerStore", {
     timers: types.array(Timer),
-    isLoading: true // TODO: toggle this
+    isLoading: true
   })
   .actions(self => {
     const addTimer = flow(function* addTimer(projectId, task) {
@@ -68,7 +80,7 @@ export const TimerStore = types
 
     function updateTimers(timer) {
       timer.forEach(timer => {
-        self.timers.push(timer); // TODO: make sure you're pushing model instances?
+        self.timers.push(timer);
       });
     }
 

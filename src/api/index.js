@@ -10,19 +10,21 @@ const getHeaders = () => ({
 });
 const apiRoot = "http://127.0.0.1:8000/";
 
-const _get = url =>
+export const _get = url =>
   axios
     .get(`${apiRoot}${url}`, { headers: getHeaders() })
     .then(resp => resp.data)
     .catch(err => console.log(`Error GET ${url}:`, err));
 
-const _post = (url, data) =>
+export const _post = (url, data) =>
   axios
     .post(`${apiRoot}${url}`, data, { headers: getHeaders() })
-    .then(resp => resp.data)
+    .then(resp => {
+      return resp.data;
+    })
     .catch(err => console.log(`Error POST ${url}:`, err));
 
-const _patch = (url, data) =>
+export const _patch = (url, data) =>
   axios
     .patch(`${apiRoot}${url}`, data, { headers: getHeaders() })
     .then(resp => resp.data)

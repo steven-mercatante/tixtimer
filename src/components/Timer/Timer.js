@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { prettyPrintTime } from "../../utils";
+import React, { useContext, useEffect, useState } from "react";
+import { prettyPrintTime, getTotalTime } from "../../utils";
 import play from "../../play.svg";
 import pause from "../../pause.svg";
 import ModalContext from "../../context/ModalContext";
@@ -52,6 +52,19 @@ const ToggleButton = styled.img`
 `;
 
 function Timer({ timer, deleteTimer, projects }) {
+  const [count, setCount] = useState(0);
+
+  // Update the actual timer display every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("tick");
+      if (timer.running === true) {
+        setCount(count + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [count, timer.running]);
   const { showModal } = useContext(ModalContext);
 
   const {
@@ -60,12 +73,14 @@ function Timer({ timer, deleteTimer, projects }) {
     running,
     projectId,
     start,
+    starts,
     stop,
+    stops,
     setTask,
     setProject,
-    log,
-    totalTime
+    log
   } = timer;
+  const totalTime = getTotalTime(running, starts, stops);
 
   const handleRemove = () => {
     if (totalTime > 0) {

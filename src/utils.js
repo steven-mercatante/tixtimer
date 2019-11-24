@@ -3,12 +3,15 @@ import groupBy from "lodash/groupBy";
 import { format, parseISO } from "date-fns";
 import parse from "parse-duration";
 
-// TODO: test & docstring
+// TODO: test
+/**
+ * Calculate how long the timer has ran between its various start and stop times.
+ *
+ * @param {array} starts Array of epochs
+ * @param {array} stops Array of epochs
+ */
 export const getHistoricTime = (starts, stops) => {
   let historicTime = 0;
-
-  // TODO: remove this hardcoded return once you're done implementing MST
-  return 0;
 
   starts.forEach((start, i) => {
     const stop = stops[i];
