@@ -3,6 +3,8 @@ import ProjectForm from "./ProjectForm";
 import { observer } from "mobx-react";
 import { Button, Modal, Table, message } from "antd";
 
+// TODO: might want to store number of items being deleted in a ref b/c the number in the message quickly changes to 0 right before the delete modal closes
+
 function ProjectList({ clients, projectStore }) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -36,8 +38,9 @@ function ProjectList({ clients, projectStore }) {
   async function confirmDelete() {
     console.log("confirmDelete()");
     await deleteProjects(selectedRowKeys);
-    message.success(`Project(s) successfully deleted.`);
     setDeleteModalVisible(false);
+    setSelectedRowKeys([]);
+    message.success(`Project(s) successfully deleted.`);
   }
 
   // TODO: move ProjectForm out of this component
