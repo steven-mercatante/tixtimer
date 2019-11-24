@@ -1,27 +1,30 @@
-import React, { useState } from "react";
-import Button from "../atoms/Button";
-import { Select } from "antd";
+import React, { useState, useRef } from "react";
+import { Button, Form, Input, Select, message } from "antd";
 const { Option } = Select;
 
 export default function ProjectForm({ clients, addProject }) {
-  const [name, setName] = useState("");
-  const [clientId, setClientId] = useState(null);
+  const [projectName, setProjectName] = useState("");
+  // use `undefined` instead of `null` otherwise antd Select won't show the placeholder
+  const [clientId, setClientId] = useState(undefined);
+  const projectInputRef = useRef(null);
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (clientId && name) {
-      addProject(clientId, name);
+    if (clientId && projectName) {
+      addProject(clientId, projectName);
       // !BUG: the dropdown isn't being reset even though we're calling setClientId(null)
-      setClientId(null);
-      setName("");
+      setClientId(undefined);
+      setProjectName("");
+      message.success(`Project "${projectName}" created`);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <h3>Create new project</h3>
       <Select
         placeholder="Select a client"
+        value={clientId}
         showSearch
         optionFilterProp="children"
         filterOption={(input, option) =>
@@ -29,6 +32,7 @@ export default function ProjectForm({ clients, addProject }) {
         }
         onChange={value => {
           setClientId(value);
+          projectInputRef.current.focus();
         }}
       >
         {clients.map(client => {
@@ -40,13 +44,23 @@ export default function ProjectForm({ clients, addProject }) {
         })}
       </Select>
 
-      <input
+      <Input
         type="text"
-        value={name}
+        ref={projectInputRef}
+        value={projectName}
         placeholder="Project name"
-        onChange={e => setName(e.target.value)}
+        onChange={e => setProjectName(e.target.value)}
+        onPressEnter={handleSubmit}
       />
-      <Button type="success">SAVE</Button>
-    </form>
+      <Button
+        type="primary"
+        onClick={handleSubmit}
+        disabled={
+          clientId === undefined || projectName.trim() === "" || !projectName
+        }
+      >
+        SAVE
+      </Button>
+    </Form>
   );
 }

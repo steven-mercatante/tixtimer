@@ -1,25 +1,12 @@
 import React, { useState } from "react";
 import ProjectForm from "./ProjectForm";
-import useSelectItems from "../../hooks/useSelectItems";
-import BulkActions from "../BulkActions";
-import isEmpty from "lodash/isEmpty";
 import { observer } from "mobx-react";
-import { Table } from "antd";
+import { Button, Modal, Table, message } from "antd";
 
 function ProjectList({ clients, projectStore }) {
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { projects, deleteProjects } = projectStore;
-  const itemIdExtractor = item => item.id;
-
-  const { selectedItems, unselectAllItems } = useSelectItems(
-    Object.values(projects),
-    itemIdExtractor
-  );
-
-  if (isEmpty(clients) || isEmpty(projects)) {
-    // TODO: make this look good
-    return <div>Loading...</div>;
-  }
 
   const columns = [
     { title: "Client", dataIndex: "client" },
@@ -41,22 +28,39 @@ function ProjectList({ clients, projectStore }) {
     }
   };
 
+  function handleClickDelete() {
+    console.log("handleClickDelete()");
+    setDeleteModalVisible(true);
+  }
+
+  async function confirmDelete() {
+    console.log("confirmDelete()");
+    await deleteProjects(selectedRowKeys);
+    message.success(`Project(s) successfully deleted.`);
+  }
+
   // TODO: move ProjectForm out of this component
   // TODO: inflect the deleteMsg below
   return (
     <div>
       <ProjectForm clients={clients} addProject={projectStore.addProject} />
-      {selectedRowKeys.length > 0 && (
-        <BulkActions
-          deleteMsgFunc={() =>
-            `Are you sure you want to delete ${selectedRowKeys.length} projects?`
-          }
-          onConfirmCallback={() => {
-            deleteProjects(selectedRowKeys);
-            unselectAllItems();
-          }}
-        />
-      )}
+      <Button
+        type="danger"
+        onClick={handleClickDelete}
+        disabled={!selectedRowKeys.length}
+      >
+        Delete
+      </Button>
+      <Modal
+        visible={deleteModalVisible}
+        onOk={confirmDelete}
+        onCancel={() => setDeleteModalVisible(false)}
+      >
+        <p>
+          {`Are you sure you want to delete ${selectedRowKeys.length} projects?`}
+        </p>
+      </Modal>
+
       <Table
         rowSelection={rowSelection}
         columns={columns}
