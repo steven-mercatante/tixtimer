@@ -1,66 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import ClientForm from "./ClientForm";
-import useSelectItems from "../../hooks/useSelectItems";
-import BulkActions from "../BulkActions";
 import { observer } from "mobx-react";
+import { Button, Modal, Table, message } from "antd";
 
 function ClientList({ clientStore }) {
-  console.log("ClientList clients:", clientStore.clients.toJSON());
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
-  const itemIdExtractor = item => item.id;
+  const columns = [{ title: "Name", dataIndex: "name" }];
 
-  const {
-    selectedItems,
-    unselectAllItems,
-    toggleSelectItem,
-    allItemsSelected,
-    toggleSelectAll
-  } = useSelectItems(Object.values(clientStore.clients), itemIdExtractor);
+  const dataSource = clientStore.clients.map(client => ({
+    key: client.id,
+    name: client.name
+  }));
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: selectedRowKeys => {
+      setSelectedRowKeys(selectedRowKeys);
+    }
+  };
+
+  function handleClickDelete() {
+    console.log("handleClickDelete()");
+    setDeleteModalVisible(true);
+  }
+
+  async function confirmDelete() {
+    console.log("confirmDelete()");
+    await clientStore.deleteClients(selectedRowKeys);
+    setDeleteModalVisible(false);
+    message.success(`Client(s) successfully deleted.`);
+  }
 
   return (
     <React.Fragment>
       <ClientForm addClient={clientStore.addClient} />
 
-      {selectedItems.length > 0 && (
-        <BulkActions
-          deleteMsgFunc={() =>
-            `Are you sure you want to delete ${selectedItems.length} clients?`
-          }
-          onConfirmCallback={() => {
-            clientStore.deleteClients(selectedItems);
-            unselectAllItems();
-          }}
-        />
-      )}
+      <Button
+        type="danger"
+        onClick={handleClickDelete}
+        disabled={!selectedRowKeys.length}
+      >
+        Delete
+      </Button>
+      <Modal
+        visible={deleteModalVisible}
+        onOk={confirmDelete}
+        onCancel={() => setDeleteModalVisible(false)}
+      >
+        <p>
+          {`Are you sure you want to delete ${selectedRowKeys.length} clients?`}
+        </p>
+      </Modal>
 
-      <table>
-        <thead>
-          <tr>
-            <th>
-              <input
-                type="checkbox"
-                onClick={toggleSelectAll}
-                checked={allItemsSelected}
-              />
-            </th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {clientStore.clients.map(client => (
-            <tr key={client.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  onClick={() => toggleSelectItem(client.id)}
-                  checked={selectedItems.includes(client.id)}
-                />
-              </td>
-              <td>{client.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={dataSource}
+      ></Table>
     </React.Fragment>
   );
 }

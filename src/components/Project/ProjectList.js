@@ -37,6 +37,7 @@ function ProjectList({ clients, projectStore }) {
     console.log("confirmDelete()");
     await deleteProjects(selectedRowKeys);
     message.success(`Project(s) successfully deleted.`);
+    setDeleteModalVisible(false);
   }
 
   // TODO: move ProjectForm out of this component
