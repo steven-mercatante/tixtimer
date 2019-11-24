@@ -26,7 +26,7 @@ function ProjectList({ clients, projectStore, addProject }) {
   // TODO: inflect the deleteMsg below
   return (
     <div>
-      <ProjectForm clients={clients} addProject={addProject} />
+      <ProjectForm clients={clients} addProject={projectStore.addProject} />
       {selectedItems.length > 0 && (
         <BulkActions
           deleteMsgFunc={() =>
