@@ -1,6 +1,6 @@
 import { types, flow } from "mobx-state-tree";
 import { Project } from "./projectStore";
-import { createTimer, getTimers, updateTimer, _post } from "../api";
+import { createTimer, getTimers, updateTimer, _post, _patch } from "../api";
 import { getHistoricTime } from "../utils";
 
 export const Timer = types
@@ -36,13 +36,15 @@ export const Timer = types
       console.log("log:", self.getTotalTime());
     }
 
-    function setTask(task) {
+    const setTask = flow(function* setTask(task) {
+      yield _patch(`timers/${self.id}/`, { task });
       self.task = task;
-    }
+    });
 
-    function setProject(projectId) {
+    const setProject = flow(function* setProject(projectId) {
+      yield _patch(`timers/${self.id}/`, { project: projectId });
       self.project = projectId;
-    }
+    });
 
     return {
       start,
