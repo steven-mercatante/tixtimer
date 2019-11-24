@@ -1,25 +1,34 @@
 import React, { useState } from "react";
-import Button from "../atoms/Button";
+import { Button, Form, Input, message } from "antd";
 
 export default ({ addClient }) => {
   const [name, setName] = useState("");
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (!name) return;
     addClient(name);
     setName("");
+    message.success(`Client "${name}" created`);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>Client name</label>
-      <input
+    <Form onSubmit={handleSubmit}>
+      <label>Create client</label>
+      <Input
         type="text"
         value={name}
         placeholder="Client name"
         onChange={e => setName(e.target.value)}
+        onPressEnter={handleSubmit}
       />
-      <Button type="success">SAVE</Button>
-    </form>
+      <Button
+        type="primary"
+        onClick={handleSubmit}
+        disabled={name.trim() === "" || !name}
+      >
+        SAVE
+      </Button>
+    </Form>
   );
 };

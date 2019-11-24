@@ -1,6 +1,5 @@
 import { types, flow } from "mobx-state-tree";
 import { createClient, getClients, deleteClient } from "../api";
-import { toast } from "react-toastify";
 
 export const Client = types.model("Client", {
   id: types.identifierNumber,
@@ -18,7 +17,6 @@ export const ClientStore = types
         const result = yield createClient(name);
         const client = Client.create({ id: result.id, name: result.name });
         self.clients.push(client);
-        toast.success(`Client "${client.name}" created`);
       } catch (err) {
         console.error("Failed to create client", err);
       }
