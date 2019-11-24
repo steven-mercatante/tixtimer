@@ -15,6 +15,7 @@ import "./css/normalize.css";
 import "./css/skeleton.css";
 import "./css/App.css";
 import "react-toastify/dist/ReactToastify.css";
+import "antd/dist/antd.css";
 
 import AppStore from "./stores/appStore";
 

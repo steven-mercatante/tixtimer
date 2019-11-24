@@ -1,15 +1,7 @@
 import React, { useState } from "react";
 import Button from "../atoms/Button";
-import Dropdown from "../Dropdown";
-
-const convertForDropdown = data =>
-  data.reduce(
-    (acc, item) => {
-      acc.push([item.id, item.name]);
-      return acc;
-    },
-    [[null, "-- Select Client --"]]
-  );
+import { Select } from "antd";
+const { Option } = Select;
 
 export default function ProjectForm({ clients, addProject }) {
   const [name, setName] = useState("");
@@ -27,11 +19,27 @@ export default function ProjectForm({ clients, addProject }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>Project name</label>
-      <Dropdown
-        items={convertForDropdown(clients)}
-        callback={clientId => setClientId(clientId)}
-      />
+      <h3>Create new project</h3>
+      <Select
+        placeholder="Select a client"
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+        onChange={value => {
+          setClientId(value);
+        }}
+      >
+        {clients.map(client => {
+          return (
+            <Option key={client.id} value={client.id}>
+              {client.name}
+            </Option>
+          );
+        })}
+      </Select>
+
       <input
         type="text"
         value={name}

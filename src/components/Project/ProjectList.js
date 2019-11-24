@@ -1,73 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import ProjectForm from "./ProjectForm";
 import useSelectItems from "../../hooks/useSelectItems";
 import BulkActions from "../BulkActions";
 import isEmpty from "lodash/isEmpty";
 import { observer } from "mobx-react";
+import { Table } from "antd";
 
-function ProjectList({ clients, projectStore, addProject }) {
+function ProjectList({ clients, projectStore }) {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const { projects, deleteProjects } = projectStore;
   const itemIdExtractor = item => item.id;
 
-  const {
-    selectedItems,
-    unselectAllItems,
-    toggleSelectItem,
-    allItemsSelected,
-    toggleSelectAll
-  } = useSelectItems(Object.values(projects), itemIdExtractor);
+  const { selectedItems, unselectAllItems } = useSelectItems(
+    Object.values(projects),
+    itemIdExtractor
+  );
 
   if (isEmpty(clients) || isEmpty(projects)) {
     // TODO: make this look good
     return <div>Loading...</div>;
   }
 
+  const columns = [
+    { title: "Client", dataIndex: "client" },
+    { title: "Project", dataIndex: "project" }
+  ];
+
+  const dataSource = projects.map(project => {
+    return {
+      key: project.id,
+      client: project.client.name,
+      project: project.name
+    };
+  });
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: selectedRowKeys => {
+      setSelectedRowKeys(selectedRowKeys);
+    }
+  };
+
   // TODO: move ProjectForm out of this component
   // TODO: inflect the deleteMsg below
   return (
     <div>
       <ProjectForm clients={clients} addProject={projectStore.addProject} />
-      {selectedItems.length > 0 && (
+      {selectedRowKeys.length > 0 && (
         <BulkActions
           deleteMsgFunc={() =>
-            `Are you sure you want to delete ${selectedItems.length} projects?`
+            `Are you sure you want to delete ${selectedRowKeys.length} projects?`
           }
           onConfirmCallback={() => {
-            deleteProjects(selectedItems);
+            deleteProjects(selectedRowKeys);
             unselectAllItems();
           }}
         />
       )}
-      <table>
-        <thead>
-          <tr>
-            <td>
-              <input
-                type="checkbox"
-                onClick={toggleSelectAll}
-                checked={allItemsSelected}
-              />
-            </td>
-            <td>Client</td>
-            <td>Name</td>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map(project => (
-            <tr key={project.id}>
-              <td>
-                <input
-                  type="checkbox"
-                  onClick={() => toggleSelectItem(project.id)}
-                  checked={selectedItems.includes(project.id)}
-                />
-              </td>
-              <td>{project.client.name}</td>
-              <td>{project.name}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table
+        rowSelection={rowSelection}
+        columns={columns}
+        dataSource={dataSource}
+      ></Table>
     </div>
   );
 }
