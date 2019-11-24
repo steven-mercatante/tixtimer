@@ -3,7 +3,7 @@ import { toSeconds } from "../../utils";
 import Button from "../atoms/Button";
 import ProjectDropdown from "../Project/ProjectDropdown";
 
-export default ({ createEntry }) => {
+export default function LogTimeForm({ projects, createEntry }) {
   const [task, setTask] = useState("");
   const [time, setTime] = useState("");
   const [projectId, setProjectId] = useState();
@@ -40,8 +40,8 @@ export default ({ createEntry }) => {
         placeholder="1h 30m"
         onChange={e => setTime(e.target.value)}
       />
-      <ProjectDropdown callback={id => setProjectId(id)} />
+      <ProjectDropdown projects={projects} callback={id => setProjectId(id)} />
       <Button type="success">SUBMIT</Button>
     </form>
   );
-};
+}

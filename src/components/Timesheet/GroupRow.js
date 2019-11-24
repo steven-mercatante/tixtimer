@@ -16,15 +16,16 @@ const Td = styled.td`
   padding: 2px;
 `;
 
-export default ({
+export default function GroupRow({
   entry,
   updateEntry,
   onChangeTask,
   onChangeTime,
   assignEntryToProject,
   isSelected,
-  handleToggle
-}) => {
+  handleToggle,
+  projects
+}) {
   // console.log("--- GroupRow render()");
   const { id, task, seconds, loggedFor } = entry;
 
@@ -61,10 +62,11 @@ export default ({
       </Td>
       <Td>
         <ProjectDropdown
+          projects={projects}
           callback={projectId => assignEntryToProject(id, projectId)}
           selected={entry.projectId}
         />
       </Td>
     </tr>
   );
-};
+}

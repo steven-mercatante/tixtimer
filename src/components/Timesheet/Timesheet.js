@@ -81,7 +81,7 @@ const Search = ({ setSearchTerm, setSearchTermTotalTime }) => {
   );
 };
 
-export default () => {
+export default function({ projects }) {
   const {
     entries,
     createEntry,
@@ -117,7 +117,7 @@ export default () => {
 
   return (
     <Timesheet>
-      <LogTimeForm createEntry={createEntry} />
+      <LogTimeForm projects={projects} createEntry={createEntry} />
 
       <Pagination page={page} nextPage={nextPage} prevPage={prevPage} />
 
@@ -221,6 +221,7 @@ export default () => {
                 assignEntryToProject={assignEntryToProject}
                 isSelected={selectedItems.includes(entry.id)}
                 handleToggle={() => toggleSelectItem(entry.id)}
+                projects={projects}
               />
             ))}
           </TimesheetGroup>
@@ -229,4 +230,4 @@ export default () => {
       <Pagination page={page} nextPage={nextPage} prevPage={prevPage} />
     </Timesheet>
   );
-};
+}

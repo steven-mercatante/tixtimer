@@ -55,7 +55,7 @@ export default () => (
             projects={projectStore.projects}
             timerStore={timerStore}
           />
-          <Timesheet path="/timesheets" />
+          <Timesheet path="/timesheets" projects={projectStore.projects} />
         </Router>
       </Content>
     </ContentContainer>
