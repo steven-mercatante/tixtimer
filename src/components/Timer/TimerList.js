@@ -6,7 +6,12 @@ function TimerList({ timerStore, projects }) {
   return (
     <div>
       {timerStore.timers.map(timer => (
-        <Timer key={timer.id} timer={timer} projects={projects} />
+        <Timer
+          key={timer.id}
+          timer={timer}
+          deleteTimer={timerStore.deleteTimer}
+          projects={projects}
+        />
       ))}
     </div>
   );

@@ -20,7 +20,13 @@ const _post = (url, data) =>
   axios
     .post(`${apiRoot}${url}`, data, { headers: getHeaders() })
     .then(resp => resp.data)
-    .catch(err => console.log(`Error GET ${url}:`, err));
+    .catch(err => console.log(`Error POST ${url}:`, err));
+
+const _patch = (url, data) =>
+  axios
+    .patch(`${apiRoot}${url}`, data, { headers: getHeaders() })
+    .then(resp => resp.data)
+    .catch(err => console.log(`Error PATCH ${url}:`, err));
 
 const _delete = url => {
   axios
@@ -62,7 +68,7 @@ export const deleteClients = ids => {
 
 export const deleteTimer = id => _delete(`timers/${id}/`);
 
-export const updateTimer = (id, data) => {};
+export const updateTimer = (id, data) => _patch(`timers/${id}/`, data);
 
 export const getTimesheetEntries = async (page = 1, searchTerm = "") =>
   _get("entries/");

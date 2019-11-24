@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { getTotalTime, prettyPrintTime } from "../../utils";
+import { prettyPrintTime } from "../../utils";
 import play from "../../play.svg";
 import pause from "../../pause.svg";
 import ModalContext from "../../context/ModalContext";
@@ -7,6 +7,7 @@ import styled, { css } from "styled-components";
 import Button from "../atoms/Button";
 import Card from "../atoms/Card";
 import ProjectDropdown from "../Project/ProjectDropdown";
+import { observer } from "mobx-react";
 
 const TimerCard = styled(Card)`
   width: 500px;
@@ -50,45 +51,38 @@ const ToggleButton = styled.img`
   cursor: pointer;
 `;
 
-export default function({
-  timer,
-  startTimer,
-  stopTimer,
-  removeTimer,
-  logTime,
-  setTimerTask,
-  assignToProject,
-  projects
-}) {
+function Timer({ timer, deleteTimer, projects }) {
   const { showModal } = useContext(ModalContext);
 
-  const { id, task, starts, stops, running, projectId } = timer;
-  const totalTime = getTotalTime(running, starts, stops);
-
-  const handleUpdateTask = e => {
-    setTimerTask(id, e.target.value);
-  };
-
-  const handleLog = () => {
-    // Call totalTime so we don't get a drifted value of this.totalTime // TODO needed??
-    const totalTime = getTotalTime(running, starts, stops);
-    logTime(id, task, totalTime, projectId);
-  };
+  const {
+    id,
+    task,
+    running,
+    projectId,
+    start,
+    stop,
+    setTask,
+    setProject,
+    log,
+    totalTime
+  } = timer;
 
   const handleRemove = () => {
     if (totalTime > 0) {
       showModal("CONFIRM", {
         msg:
           "This timer has unlogged time. Are you sure you want to remove it?",
-        onConfirm: () => removeTimer(id)
+        onConfirm: () => {
+          deleteTimer(id);
+        }
       });
     } else {
-      removeTimer(id);
+      deleteTimer(id);
     }
   };
 
   const handleToggle = () => {
-    running === true ? stopTimer(id) : startTimer(id);
+    running === true ? stop() : start();
   };
 
   return (
@@ -105,7 +99,9 @@ export default function({
         <input
           type="text"
           value={task}
-          onChange={handleUpdateTask}
+          onChange={e => {
+            setTask(e.target.value);
+          }}
           autoFocus
           placeholder="What are you working on?"
         />
@@ -116,20 +112,18 @@ export default function({
         <ActionButton type="danger" onClick={handleRemove}>
           X
         </ActionButton>
-        <ActionButton
-          type="info"
-          onClick={handleLog}
-          disabled={totalTime === 0}
-        >
+        <ActionButton type="info" onClick={log}>
           L
         </ActionButton>
       </ActionsContainer>
 
       <ProjectDropdown
-        callback={projectId => assignToProject(id, projectId)}
+        callback={projectId => setProject(projectId)}
         selected={projectId}
         projects={projects}
       />
     </TimerCard>
   );
 }
+
+export default observer(Timer);

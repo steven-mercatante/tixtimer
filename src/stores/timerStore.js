@@ -1,15 +1,45 @@
 import { types, flow } from "mobx-state-tree";
 import { Project } from "./projectStore";
-import { createTimer, getTimers } from "../api";
+import { createTimer, getTimers, updateTimer } from "../api";
+import { getNow } from "../utils";
 
-export const Timer = types.model("Timer", {
-  id: types.identifierNumber,
-  project: types.reference(Project),
-  task: types.string,
-  running: false,
-  starts: types.string,
-  stops: types.string
-});
+export const Timer = types
+  .model("Timer", {
+    id: types.identifierNumber,
+    project: types.reference(Project),
+    task: types.string,
+    running: false,
+    starts: types.array(types.string),
+    stops: types.array(types.string)
+  })
+  .views(self => ({
+    get totalTime() {
+      return 42;
+    }
+  }))
+  .actions(self => ({
+    start() {
+      console.log([...self.starts, getNow()]);
+      updateTimer(self.id, { running: true });
+      self.running = true;
+    },
+
+    stop() {
+      console.log([...self.stops, getNow()]);
+      updateTimer(self.id, { running: false });
+      self.running = false;
+    },
+
+    log() {},
+
+    setTask(task) {
+      self.task = task;
+    },
+
+    setProject(projectId) {
+      self.project = projectId;
+    }
+  }));
 
 export const TimerStore = types
   .model("TimerStore", {
@@ -32,6 +62,8 @@ export const TimerStore = types
 
     function deleteTimer(id) {
       console.log("TimerStore.delete()", id);
+      // TODO: call API
+      self.timers = self.timers.filter(timer => timer.id !== id);
     }
 
     function updateTimers(timer) {
