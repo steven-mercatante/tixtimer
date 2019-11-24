@@ -1,5 +1,5 @@
 import { types, flow } from "mobx-state-tree";
-import { createClient, getClients } from "../api";
+import { createClient, getClients, deleteClient } from "../api";
 import { toast } from "react-toastify";
 
 export const Client = types.model("Client", {
@@ -24,8 +24,16 @@ export const ClientStore = types
       }
     });
 
-    function deleteClient(id) {
-      console.log("ClientStore.delete()", id);
+    function deleteClients(ids) {
+      console.log("ClientStore.deleteClients()", ids);
+      ids.forEach(id => {
+        try {
+          deleteClient(id);
+          self.clients = self.clients.filter(client => client.id !== id);
+        } catch (err) {
+          console.error(`Failed to delete client`, err);
+        }
+      });
     }
 
     function updateClients(clients) {
@@ -46,7 +54,7 @@ export const ClientStore = types
 
     return {
       addClient,
-      deleteClient,
+      deleteClients,
       loadClients
     };
   });
