@@ -13,12 +13,27 @@ export const TimesheetEntry = types.model("TimesheetEntry", {
 
 export const TimesheetEntryStore = types
   .model("TimesheetEntryStore", {
-    entries: types.array(TimesheetEntry)
+    entries: types.array(TimesheetEntry),
+    isLoading: true
   })
   .actions(self => {
+    function updateEntries(entries) {
+      entries.forEach(entry => {
+        self.entries.push({
+          id: entry.id,
+          task: entry.task,
+          project: entry.project,
+          loggedFor: entry.logged_for,
+          seconds: entry.seconds,
+          notes: entry.notes
+        });
+      });
+    }
+
     const loadEntries = flow(function* loadEntries() {
       const entries = yield getTimesheetEntries();
-      console.log("loaded entries:", entries);
+      updateEntries(entries);
+      self.isLoading = false;
     });
 
     return {

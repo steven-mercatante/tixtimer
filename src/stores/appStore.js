@@ -27,6 +27,8 @@ const AppStore = types
       yield self.clientStore.loadClients();
       yield self.projectStore.loadProjects();
       yield self.timerStore.loadTimers();
+      // TODO: timesheet entries don't need to be loaded immediately when the app starts, but they do require clients & projects already being loaded. I'd like for them to be loaded on-demand when you first visit the timesheet screen
+      self.timesheetEntryStore.loadEntries();
       self.isLoading = false;
     })
   }));
