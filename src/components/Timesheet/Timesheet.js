@@ -25,6 +25,7 @@ import format from "date-fns/format";
 import endOfMonth from "date-fns/endOfMonth";
 import parseISO from "date-fns/parseISO";
 import useTimesheet from "../../hooks/useTimesheet";
+import { observer } from "mobx-react";
 
 // TODO: clean up
 const _startOfMonth = parseISO(format(startOfMonth(new Date()), "yyyy-MM-dd"));
@@ -81,7 +82,7 @@ const Search = ({ setSearchTerm, setSearchTermTotalTime }) => {
   );
 };
 
-export default function({ projects }) {
+export default observer(function({ projects }) {
   const {
     entries,
     createEntry,
@@ -230,4 +231,4 @@ export default function({ projects }) {
       <Pagination page={page} nextPage={nextPage} prevPage={prevPage} />
     </Timesheet>
   );
-}
+});

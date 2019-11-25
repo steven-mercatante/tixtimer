@@ -20,7 +20,7 @@ import "antd/dist/antd.css";
 import AppStore from "./stores/appStore";
 
 const appStore = AppStore.create();
-const { clientStore, projectStore, timerStore } = appStore;
+const { clientStore, projectStore, timerStore, timesheetEntryStore } = appStore;
 
 const ContentContainer = styled.div`
   position: absolute;
@@ -55,7 +55,11 @@ export default () => (
             projects={projectStore.projects}
             timerStore={timerStore}
           />
-          <Timesheet path="/timesheets" projects={projectStore.projects} />
+          <Timesheet
+            path="/timesheets"
+            timesheetEntryStore={timesheetEntryStore}
+            projects={projectStore.projects}
+          />
         </Router>
       </Content>
     </ContentContainer>
